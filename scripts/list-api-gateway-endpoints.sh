@@ -1,1 +1,1 @@
-aws apigateway get-rest-apis --endpoint-url=http://localhost:4566
+aws apigateway get-rest-apis --endpoint-url=http://localhost:4566 
