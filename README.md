@@ -1,4 +1,4 @@
-# AWS Terraform Example 🚀
+# AWS Terraform Example (Node.js) 🚀
 
 I challenged myself today to try and get an AWS API Gateway endpoint calling an AWS Lambda, all running locally in Docker and configured with Terraform!
 
