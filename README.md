@@ -19,7 +19,6 @@ terraform apply --auto-approve
 You should then be able to hit the POST endpoint like this:
 
 ```bash
-# URL
 curl --header "Content-Type: application/json" \
   --request POST \
   --data '{"name":"Harry Jacks"}' \
