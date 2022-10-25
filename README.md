@@ -25,7 +25,7 @@ curl --header "Content-Type: application/json" \
   http://localhost:4566/restapis/<rest-api-id>/test/_user_request_/hello
 ```
 
-The <rest-api-id> needed in the script above can be found by running this shell script:
+The **rest-api-id** needed in the script above can be found by running this shell script:
 ```bash
 # Give script permission to run
 chmod +x /<your-file-path-goes-here>/aws-terraform-example/scripts/list-api-gateway-endpoints.sh
