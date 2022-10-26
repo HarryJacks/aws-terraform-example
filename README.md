@@ -25,6 +25,15 @@ curl --header "Content-Type: application/json" \
   http://localhost:4566/restapis/<rest-api-id>/test/_user_request_/hello
 ```
 
+...or this
+
+```bash
+curl --header "Content-Type: application/json" \
+  --request POST \
+  --data '{"name":"Harry Jacks"}' \
+  http://ksorkzomgc.execute-api.localhost.localstack.cloud:4566/local/hello
+```
+
 The **rest-api-id** needed in the script above can be found by running this shell script:
 ```bash
 # Give script permission to run
