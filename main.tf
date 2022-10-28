@@ -1,30 +1,4 @@
-terraform {
-  required_providers {
-    aws = {
-        source = "hashicorp/aws"
-        version = "~> 3"
-    }
-  }
-}
-
-# Configure the aws provider
-provider "aws" {
-  region = "ap-northeast-2"
-  access_key = "test"
-  secret_key = "test"
-  s3_force_path_style = false
-  skip_credentials_validation = true
-  skip_metadata_api_check = true
-  skip_requesting_account_id = true
-
-  endpoints {
-    apigateway = "http://localhost:4566"
-    iam = "http://localhost:4566"
-    s3 = "http://s3.localhost.localstack.cloud:4566"
-    lambda = "http://localhost:4566"
-  }
-}
-
+// Resource: IAM
 resource "aws_iam_role" "iam_for_lambda" {
     name = "iam_for_lambda"
 
@@ -45,6 +19,7 @@ resource "aws_iam_role" "iam_for_lambda" {
     EOF
 }
 
+// Resource: Lambda
 resource "aws_lambda_function" "hello" {
   filename = "index.zip"
   function_name = "hello"
@@ -60,6 +35,7 @@ resource "aws_lambda_function" "hello" {
   }
 }
 
+// Resource: API Gateway
 resource "aws_api_gateway_rest_api" "api_gw" {
     name = "Example API Gateway"
     description = "API gateway v1"
@@ -101,4 +77,63 @@ resource "aws_lambda_permission" "apigw" {
   function_name = aws_lambda_function.hello.function_name
   principal = "apigateway.amazonaws.com"
   source_arn =  "${aws_api_gateway_rest_api.api_gw.execution_arn}/*/*"
+}
+
+// Resource: DynamoDB
+resource "aws_dynamodb_table" "england_98_table" {
+  name             = "England98"
+  billing_mode     = "PROVISIONED"
+  read_capacity    = 1
+  write_capacity   = 1 
+  hash_key         = "PlayerName"
+  
+  attribute {
+    name = "PlayerName"
+    type = "S"
+  }
+  
+  attribute {
+    name = "SquadNumber"
+    type = "S"
+  }
+  global_secondary_index {
+    name               = "SquadNumber-Index"
+    hash_key           = "SquadNumber"
+    write_capacity     = 1
+    read_capacity      = 1
+    projection_type    = "INCLUDE"
+    non_key_attributes = ["Age"]
+  }
+  tags = {
+    Name        = "england-98-table"
+    Environment = "test"
+  }
+}
+
+// Create DynamoDB Add Multiple Items to England98 
+resource "aws_dynamodb_table_item" "england_98_items" {
+  table_name = aws_dynamodb_table.england_98_table.name
+  hash_key   = aws_dynamodb_table.england_98_table.hash_key
+  
+  for_each = {
+    "Seaman" = {
+      squadNumber = "1"
+      age  = 34
+    }
+    "Shearer" = {
+      squadNumber = "9"
+      age  = 27    
+    }
+    "Beckham" = {
+      squadNumber = "7"
+      age  = 23    
+    }
+  }
+  item = <<ITEM
+ {
+    "PlayerName": {"S": "${each.key}"},
+    "SquadNumber": {"S": "${each.value.squadNumber}"},
+    "Age": {"N": "${each.value.age}"}
+  }
+  ITEM
 }

@@ -4,6 +4,6 @@ services:
     image: localstack/localstack:latest
     environment:
       - EDGE_PORT=4566
-      - SERVICES=s3,lambda,logs,apigateway
+      - SERVICES=s3,lambda,logs,apigateway,dynamodb
     ports:
       - '4566-4583:4566-4583'

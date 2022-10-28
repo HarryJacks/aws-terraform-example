@@ -1,0 +1,1 @@
+aws dynamodb scan --table-name England98 --endpoint-url=http://localhost:4566
