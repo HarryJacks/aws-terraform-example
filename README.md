@@ -1,10 +1,13 @@
 # AWS Terraform Example (Node.js) 🚀
 
-I challenged myself today to try and get an AWS API Gateway endpoint calling an AWS Lambda, all running locally in Docker and configured with Terraform!
+I challenged myself today to try and get an AWS API Gateway endpoint calling an AWS Lambda, all running locally in Docker and configured with Terraform! I've since added a DynamoDB with some dummy data and now we can POST data to the API, it then calls the Lambda, which puts the data into the table in the database.
 
 ## Installation
 
 Ensure that Localstack, Docker and Terraform are installed. (aws-cli is also needed for the shell scripts).
+
+## Setup
+Zip up the 'contents' of the /lambda-src folder (not the folder itself) and call it 'index.zip'. Put this zip file at the root of the project before running the commands below.
 
 ## Usage
 ```bash
@@ -21,17 +24,8 @@ You should then be able to hit the POST endpoint like this:
 ```bash
 curl --header "Content-Type: application/json" \
   --request POST \
-  --data '{"name":"Harry Jacks"}' \
-  http://localhost:4566/restapis/<rest-api-id>/test/_user_request_/hello
-```
-
-...or this
-
-```bash
-curl --header "Content-Type: application/json" \
-  --request POST \
-  --data '{"name":"Harry Jacks"}' \
-  http://ksorkzomgc.execute-api.localhost.localstack.cloud:4566/local/hello
+  --data '{"name":"Neville","number":"12","age":23}' \
+  http://localhost:4566/restapis/<rest-api-id>/test/_user_request_/create_england98_player
 ```
 
 The **rest-api-id** needed in the script above can be found by running this shell script:

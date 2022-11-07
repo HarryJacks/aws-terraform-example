@@ -3,3 +3,5 @@
 get-pip.py
 terraform.tfstate
 terraform.tfstate.backup
+node_modules
+index.zip
